@@ -1,0 +1,271 @@
+{
+	"info": {
+		"_postman_id": "auth-mini-api-id-2026",
+		"name": "Auth Mini API - Complete Testing",
+		"description": "مجموعة اختبارات شاملة لتاسك Auth Mini API تغطي مسارات المصادقة وحماية الجلسات والـ 5 مسارات المحمية بناءً على مصفوفة الصلاحيات.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Authentication",
+			"item": [
+				{
+					"name": "Sign Up - Create Account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Student User\",\n    \"email\": \"student@example.com\",\n    \"password\": \"password123\",\n    \"role\": \"user\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"signup"
+							]
+						},
+						"description": "إنشاء حساب جديد في النظام (لتجربة الأدمن غير الـ role إلى admin)"
+					},
+					"response": []
+				},
+				{
+					"name": "Log In - Acquire Session Cookies",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"student@example.com\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "تسجيل الدخول وجلب التوكنات وتخزينها تلقائياً في المتصفح/بوستمان عبر الكوكيز"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token - Rotate Session",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/refresh",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"refresh"
+							]
+						},
+						"description": "تجديد توكن الوصول (Access Token) اعتماداً على كوكيز الريفريش المشفرة دون الحاجة للباسورد"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"profile"
+							]
+						},
+						"description": "جلب بيانات الحساب الحالي بناءً على التوكن الممرر في الكوكيز"
+					},
+					"response": []
+				},
+				{
+					"name": "Log Out - Destroy Cookies",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						},
+						"description": "حذف الكوكيز من المتصفح وتطهير الجلسة تماماً من قاعدة البيانات"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. User Space",
+			"item": [
+				{
+					"name": "GET Welcome Message",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/me/welcome",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"me",
+								"welcome"
+							]
+						},
+						"description": "مسار محمي رقم (1) متاح لأي مستخدم مسجل دخوله بنجاح"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Account Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/me/account-summary",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"me",
+								"account-summary"
+							]
+						},
+						"description": "مسار محمي رقم (2) يعرض ملخص حساب وهمي لأي مستخدم موثق"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. Administration Space",
+			"item": [
+				{
+					"name": "GET Admin Overview",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/overview",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"overview"
+							]
+						},
+						"description": "مسار محمي رقم (3) محظور على المستخدم العادي ويعود بـ 403، ومتاح للأدمن بـ 200"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Admin All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"users"
+							]
+						},
+						"description": "مسار محمي رقم (4) يعرض كافة المستخدمين في النظام بدون الباسوردات للأدمن فقط"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE User by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/users/65fc1234567890abcdef1234",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"users",
+								"65fc1234567890abcdef1234"
+							]
+						},
+						"description": "مسار محمي رقم (5) لحذف مستخدم مخصص مع فحص معرّف ID السليم وحظر حذف النفس"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
